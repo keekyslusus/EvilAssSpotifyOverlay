@@ -1,0 +1,81 @@
+@font-face {
+    font-family: 'Russo One';
+    src: url('fonts/russo_one.ttf') format('truetype');
+}
+
+body {
+    margin: 0;
+    font-family: Russo One;
+    font-weight: bold;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+body.loaded {
+    opacity: 1;
+}
+
+#widget-container {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.track-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+}
+
+.track-info span {
+    background-color: rgba(55, 61, 89, 0.75);
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+
+.track-info .track-name {
+    font-size: 34px;
+}
+
+.track-info .artist-name {
+    font-size: 28px;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+}
+
+.track-info.enter {
+    animation: slideIn 0.7s forwards cubic-bezier(.9,0,0,.98);
+}
+
+.track-info.exit {
+    position: absolute;
+    animation: slideOut 0.7s forwards cubic-bezier(.9,0,0,.98);
+    z-index: 10;
+}
