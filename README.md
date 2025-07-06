@@ -1,5 +1,7 @@
 ![peenar](assets/peenar.gif)
 
+im just spamming next button
+
 ## Configuration
 
 1.  Go to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/create) and create a new application.
@@ -13,3 +15,11 @@
 5.  In OBS add overlay as a browser with `http://127.0.0.1:8888` url
 
 6.  To Auth use **Custom Browser Docks** (Docks->Custom Browser Docks) with url `http://127.0.0.1:8888/login`
+<p>
+  <img src="assets/docks.png" width="800"/>
+</p>
+
+7.  You can install the **Advanced Scene Switcher** plugin to automate the server launch process
+<p>
+  <img src="assets/macros.png" width="800"/>
+</p>
