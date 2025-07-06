@@ -19,7 +19,7 @@ im just spamming next button
   <img src="assets/docks.png" width="800"/>
 </p>
 
-7.  You can install the **Advanced Scene Switcher** plugin to automate the server launch process
+7.  You can install the [**Advanced Scene Switcher**](https://obsproject.com/forum/resources/advanced-scene-switcher.395/) plugin to automate the server launch process
 <p>
   <img src="assets/macros.png" width="800"/>
 </p>
