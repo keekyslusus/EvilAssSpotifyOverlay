@@ -70,12 +70,26 @@ body.loaded {
     }
 }
 
-.track-info.enter {
+.track-info.exit {
+    position: absolute;
+    z-index: 10;
+}
+
+.track-info.enter .track-name,
+.track-info.enter .artist-name {
+    opacity: 0;
     animation: slideIn 0.7s forwards cubic-bezier(.9,0,0,.98);
 }
 
-.track-info.exit {
-    position: absolute;
+.track-info.enter .artist-name {
+    animation-delay: 50ms;
+}
+
+.track-info.exit .track-name,
+.track-info.exit .artist-name {
     animation: slideOut 0.7s forwards cubic-bezier(.9,0,0,.98);
-    z-index: 10;
+}
+
+.track-info.exit .artist-name {
+    animation-delay: 50ms;
 }

@@ -45,10 +45,15 @@ function handleTrackUpdate(track) {
 }
 
 function updateTrackInfo(track) {
-    const oldTrackInfo = widgetContainer.querySelector('.track-info');
+    const oldTrackInfo = widgetContainer.querySelector('.track-info:not(.exit)');
     if (oldTrackInfo) {
         oldTrackInfo.classList.add('exit');
-        oldTrackInfo.addEventListener('animationend', () => oldTrackInfo.remove(), { once: true });
+        const artist = oldTrackInfo.querySelector('.artist-name');
+        if (artist) {
+            artist.addEventListener('animationend', () => oldTrackInfo.remove(), { once: true });
+        } else {
+            oldTrackInfo.addEventListener('animationend', () => oldTrackInfo.remove(), { once: true });
+        }
     }
     showWidget(track);
 }
@@ -64,9 +69,11 @@ function showWidget(track) {
     artistName.textContent = track.artist;
     newTrackInfo.appendChild(trackName);
     newTrackInfo.appendChild(artistName);
-    newTrackInfo.addEventListener('animationend', () => {
+
+    artistName.addEventListener('animationend', () => {
         newTrackInfo.classList.remove('enter');
     }, { once: true });
+
     widgetContainer.appendChild(newTrackInfo);
 }
 
@@ -83,13 +90,18 @@ function clearWidget() {
             currentTrackId = null;
         };
         
-        currentTrack.addEventListener('animationend', cleanup, { once: true });
+        const artist = currentTrack.querySelector('.artist-name');
+        if (artist) {
+            artist.addEventListener('animationend', cleanup, { once: true });
+        } else {
+            currentTrack.addEventListener('animationend', cleanup, { once: true });
+        }
         
         setTimeout(() => {
             if (currentTrack.parentNode) {
                 cleanup();
             }
-        }, 800); // 0.7s animation + 0.1s buffer
+        }, 850); // 0.7s animation + 0.05s delay + 0.1s buffer
         
     } else {
         isWidgetVisible = false;
