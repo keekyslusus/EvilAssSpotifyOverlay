@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')))
    .use(cors());
 
 app.get('/', (req, res) => {
-    res.redirect('/widget.html');
+    res.redirect('/widget_clown.html');
 });
 
 app.get('/login', (req, res) => {

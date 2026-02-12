@@ -1,0 +1,120 @@
+val widget_container = find("#widget-container")
+val once_opt = { once: true }
+
+var current_track_id = null
+var is_widget_visible = false
+var poll_in_flight = false
+
+
+fn reset_state()
+    is_widget_visible = false
+    current_track_id = null
+
+
+fn on_anim_end(element, callback)
+    val target = element.find(".artist-name") orelse element
+    target.on("animationend", callback, once_opt)
+
+
+fn release_poll_lock()
+    poll_in_flight = false
+
+
+flow fn get_now_playing()
+    if poll_in_flight
+        return
+    poll_in_flight = true
+    curtain release_poll_lock()
+
+    try
+        val response = GET response "/api/now-playing" with
+            no_throw: true
+
+        val status = response?.status orelse -1
+        match status
+            204 ->
+                clear_widget() if is_widget_visible
+                return
+
+            401 ->
+                show_login_message()
+                return
+
+            200 ->
+                val track = GET "/api/now-playing" with
+                    no_throw: true
+                if not track
+                    return
+                handle_track_update(track)
+
+            else ->
+                return
+    catch as error
+        console.error("error fetching now playing:", error)
+
+
+fn handle_track_update(track)
+    if not track.isPlaying
+        clear_widget() if is_widget_visible
+        return
+
+    if track.id != current_track_id
+        update_track_info(track)
+        current_track_id = track.id
+        is_widget_visible = true
+    else if not is_widget_visible
+        show_widget(track)
+        is_widget_visible = true
+
+
+fn update_track_info(track)
+    val old = widget_container.find(".track-info:not(.exit)")
+    if old
+        old.tag("exit")
+        on_anim_end(old, fn() old.kill())
+
+    show_widget(track)
+
+
+fn show_widget(track)
+    val info = div .track-info .enter
+        span .track-name "${track.name}"
+        span .artist-name "${track.artist}"
+
+    on_anim_end(info, fn() info.untag("enter"))
+    widget_container.add(info)
+
+
+fn cleanup_track(track)
+    track.kill()
+    reset_state()
+
+
+fn clear_widget()
+    val current = widget_container.find(".track-info:not(.exit)")
+    if current
+        current.offsetHeight
+        current.tag("exit")
+
+        val cleanup = fn() cleanup_track(current)
+        on_anim_end(current, cleanup)
+
+        after 850ms
+            cleanup() if current.parent
+    else
+        reset_state()
+
+
+fn show_login_message()
+    val msg = div .track-info
+        span .track-name style="font-size: 16px;" "please login to spotify"
+        span .artist-name style="font-size: 12px;" "open http://127.0.0.1:8888/login in a browser"
+
+    widget_container.html = ""
+    widget_container.add(msg)
+
+
+document.body.tag("loaded")
+get_now_playing()
+every 2s
+    get_now_playing()

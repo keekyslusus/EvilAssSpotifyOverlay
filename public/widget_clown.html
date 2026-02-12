@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>evil ass spotify overlay (vibeclown)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="widget-container"></div>
+
+    <script>
+        window.VibeConfig = window.VibeConfig || {};
+        window.VibeConfig.wasmPath = "./vibeclown_bg.wasm";
+        window.VibeConfig.loaderPath = "./vibeclown.js";
+    </script>
+    <script src="vibe_bundle.js"></script>
+    <script type="text/vibe" src="script.clown?t=dev"></script>
+</body>
+</html>
